@@ -20,6 +20,7 @@ import CSS.Size (Abs, Angle(..), Deg, Rad, Rel, Size(..), deg, em, ex, nil, pct,
 import CSS.String (class IsString, fromString) as X
 import CSS.Stylesheet (App(..), CSS, Feature(..), Keyframes(..), MediaQuery(..), MediaType(..), NotOrOnly(..), Rule(..), StyleM(..), fontFace, importUrl, key, keyframes, keyframesFromTo, prefixed, query, rule, runS, select, (?)) as X
 import CSS.Text (TextDecoration(..), blink, letterSpacing, lineThrough, noneTextDecoration, overline, textDecoration, underline) as X
+import CSS.Text.Direction (TextDirection(..), direction) as X
 import CSS.Text.Whitespace (TextWhitespace, textWhitespace, whitespaceNoWrap, whitespaceNormal, whitespacePre, whitespacePreLine, whitespacePreWrap) as X
 import CSS.Time (Time(..), ms, sec) as X
 import CSS.Transform (TransformOrigin(..), TransformOriginOffset(..), Transformation(..), offset, offsetBottom, offsetCenter, offsetLeft, offsetRight, offsetTop, rotate, transform, transformOrigin, transforms, translate) as X

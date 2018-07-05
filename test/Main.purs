@@ -4,7 +4,8 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, zIndex)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, zIndex, direction)
+import CSS.Text.Direction as TextDirection
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -58,6 +59,10 @@ deepSelector = render do
   p ** a ? do
     display block
 
+exampleDirection :: Rendered
+exampleDirection = render do
+  direction TextDirection.rtl
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -97,3 +102,5 @@ main = do
   renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
 
   renderedInline example7 `assertEqual` Just "z-index: 11"
+
+  renderedInline exampleDirection `assertEqual` Just "direction: rtl"
