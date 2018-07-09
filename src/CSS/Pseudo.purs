@@ -119,3 +119,21 @@ valid = fromString ":valid"
 
 visited :: Refinement
 visited = fromString ":visited"
+
+after :: Refinement
+after = fromString "::after"
+
+before :: Refinement
+before = fromString "::before"
+
+firstLetter :: Refinement
+firstLetter = fromString "::first-letter"
+
+firstLine :: Refinement
+firstLine = fromString "::first-line"
+
+selection :: Refinement
+selection = fromString "::selection"
+
+backdrop :: Refinement
+backdrop = fromString "::backdrop"
