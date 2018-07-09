@@ -152,6 +152,11 @@ exampleDirection :: Rendered
 exampleDirection = render do
   direction TextDirection.rtl
 
+combinedSelector :: Rendered
+combinedSelector = render do
+  (p <> a) ? do
+    display block
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -185,6 +190,7 @@ main = do
   renderedSheet childSelector `assertEqual` Just "p > a { z-index: 9 }\n"
   renderedSheet deepSelector `assertEqual` Just "p a { display: block }\n"
   renderedSheet adjacentSelector `assertEqual` Just "a + a { display: inline-block }\n"
+  renderedSheet combinedSelector `assertEqual` Just "p, a { display: block }\n"
 
   renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
 
