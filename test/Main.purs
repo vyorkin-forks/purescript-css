@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, before, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import Data.Maybe (Maybe(..))
@@ -46,7 +46,7 @@ example7 = render do
 
 withSelector :: Rendered
 withSelector = render do
-  a ? do
+  a & before ? do
     color blue
   a & hover ? do
     color red
@@ -143,7 +143,7 @@ main = do
 
   renderedInline example5 `assertEqual` Just "box-sizing: content-box; box-sizing: border-box"
 
-  renderedSheet withSelector `assertEqual` Just "a { color: hsl(240.0, 100.0%, 50.0%) }\na:hover { color: hsl(0.0, 100.0%, 50.0%) }\n"
+  renderedSheet withSelector `assertEqual` Just "a::before { color: hsl(240.0, 100.0%, 50.0%) }\na:hover { color: hsl(0.0, 100.0%, 50.0%) }\n"
   renderedSheet childSelector `assertEqual` Just "p > a { z-index: 9 }\n"
   renderedSheet deepSelector `assertEqual` Just "p a { display: block }\n"
   renderedSheet adjacentSelector `assertEqual` Just "a + a { display: inline-block }\n"
