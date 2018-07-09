@@ -4,11 +4,12 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, solid, outline, inlineBlock, red, olive, black, teal, gold, violet, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, before, fontFaceSrc, fontStyle, deg, rgba, em, zIndex, textOverflow, opacity, cursor)
+import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, before, black, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, cursor, dashed, deg, direction, display, em, fontFaceSrc, fontStyle, fromString, gold, hover, inlineBlock, olive, opacity, outline, p, px, red, render, renderedInline, renderedSheet, rgba, selector, solid, teal, textOverflow, violet, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=))
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import CSS.Cursor as Cursor
 import CSS.Box (boxShadow, shadow, shadowWithBlur, shadowWithSpread, bsColor, bsInset)
+import CSS.Text.Direction as TextDirection
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton, (:|))
 
@@ -147,6 +148,10 @@ multipleShadows = render do
     red `bsColor` shadow (px 3.0) (px 3.0) :|
     [olive `bsColor` shadowWithBlur (em (-1.0)) (em 0.0) (em 0.4)]
 
+exampleDirection :: Rendered
+exampleDirection = render do
+  direction TextDirection.rtl
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -210,3 +215,5 @@ main = do
   renderedInline singleShadowWithBlur `assertEqual` Just "-webkit-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -moz-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -ms-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -o-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%)"
   renderedInline singleShadowWithSpread `assertEqual` Just "-webkit-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -moz-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -ms-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -o-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2)"
   renderedInline multipleShadows `assertEqual` Just "-webkit-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -moz-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -ms-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -o-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%)"
+
+  renderedInline exampleDirection `assertEqual` Just "direction: rtl"
