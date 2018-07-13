@@ -4,12 +4,13 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, before, black, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, cursor, dashed, deg, direction, display, em, fontFaceSrc, fontStyle, fromString, gold, hover, inlineBlock, olive, opacity, outline, p, px, red, render, renderedInline, renderedSheet, rgba, selector, solid, teal, textOverflow, violet, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=))
+import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, before, black, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, cursor, dashed, deg, direction, display, em, fontFaceSrc, fontStyle, fromString, gold, hover, inlineBlock, olive, opacity, outline, p, px, red, render, renderedInline, renderedSheet, rgba, selector, solid, teal, textOverflow, violet, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=), transform)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import CSS.Cursor as Cursor
 import CSS.Box (boxShadow, shadow, shadowWithBlur, shadowWithSpread, bsColor, bsInset)
 import CSS.Text.Direction as TextDirection
+import CSS.Transform as Transform
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton, (:|))
 
@@ -101,6 +102,16 @@ adjacentSelector :: Rendered
 adjacentSelector = render do
   a |+ a ? do
     display inlineBlock
+
+scaleTransform1 :: Rendered
+scaleTransform1 = render do
+  transform $ Transform.scaleX 1.0
+  transform $ Transform.scaleY 0.5
+  transform $ Transform.scaleZ 0.5
+
+scaleTransform2 :: Rendered
+scaleTransform2 = render do
+  transform $ Transform.scale 0.2 0.8
 
 exampleFontStyle1 :: Rendered
 exampleFontStyle1 = render do
@@ -223,3 +234,6 @@ main = do
   renderedInline multipleShadows `assertEqual` Just "-webkit-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -moz-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -ms-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -o-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%)"
 
   renderedInline exampleDirection `assertEqual` Just "direction: rtl"
+
+  renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
+  renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
