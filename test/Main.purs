@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, before, black, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, cursor, dashed, deg, direction, display, em, fontFaceSrc, fontStyle, fromString, gold, hover, inlineBlock, olive, opacity, outline, p, px, red, render, renderedInline, renderedSheet, rgba, selector, solid, teal, textOverflow, violet, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=), transform)
+import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, before, black, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, cursor, dashed, deg, direction, display, em, fontFaceSrc, fontStyle, fromString, gold, hover, inlineBlock, olive, opacity, outline, p, px, red, render, renderedInline, renderedSheet, rgba, selector, solid, teal, textOverflow, violet, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=), transform, transition, easeInOut, ms)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import CSS.Cursor as Cursor
@@ -179,6 +179,10 @@ nestedNodesWithEmptyParent = render do
   fromString "#parent" ? do
     fromString "#child" ? display block
 
+transition1 :: Rendered
+transition1 = render do
+  transition "background-color" (ms 1.0) easeInOut (ms 0.0)
+
 assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -237,3 +241,5 @@ main = do
 
   renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
   renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
+
+  renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
