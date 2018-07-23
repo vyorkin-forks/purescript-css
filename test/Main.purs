@@ -11,6 +11,7 @@ import CSS.Cursor as Cursor
 import CSS.Box (boxShadow, shadow, shadowWithBlur, shadowWithSpread, bsColor, bsInset)
 import CSS.Text.Direction as TextDirection
 import CSS.Transform as Transform
+import CSS.Common (none)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton, (:|))
 
@@ -137,6 +138,10 @@ exampleCursor :: Rendered
 exampleCursor = render do
   cursor Cursor.notAllowed
 
+noneShadow :: Rendered
+noneShadow = render do
+  boxShadow $ singleton $ none
+
 singleShadow :: Rendered
 singleShadow = render do
   boxShadow $ singleton $ bsColor teal $ shadow (px 60.0) (px (-16.0))
@@ -243,3 +248,9 @@ main = do
   renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
 
   renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
+
+  renderedInline noneShadow `assertEqual` Just "-webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; -o-box-shadow: none; box-shadow: none"
+  renderedInline singleShadow `assertEqual` Just "-webkit-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -moz-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -ms-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -o-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%)"
+  renderedInline singleShadowWithBlur `assertEqual` Just "-webkit-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -moz-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -ms-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -o-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%)"
+  renderedInline singleShadowWithSpread `assertEqual` Just "-webkit-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -moz-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -ms-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -o-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2)"
+  renderedInline multipleShadows `assertEqual` Just "-webkit-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -moz-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -ms-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -o-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%)"

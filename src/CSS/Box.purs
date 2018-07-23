@@ -16,7 +16,7 @@ import Prelude
 
 import Data.NonEmpty (NonEmpty)
 import CSS.Color (Color)
-import CSS.Common (class Inherit, browsers)
+import CSS.Common (class None, class Inherit, class Initial, class Unset, browsers)
 import CSS.Property (class Val, Value, value, (!))
 import CSS.Size (Size)
 import CSS.String (class IsString, fromString)
@@ -62,6 +62,21 @@ derive instance ordBoxShadow :: Ord BoxShadow
 
 instance valBoxShadow :: Val BoxShadow where
   value (BoxShadow v) = v
+
+instance isStringBoxShadow :: IsString BoxShadow where
+  fromString = BoxShadow <<< fromString
+
+instance noneBoxShadow :: None BoxShadow where
+  none = fromString "none"
+
+instance inheritBoxShadow :: Inherit BoxShadow where
+  inherit = fromString "inherit"
+
+instance initialBoxShadow :: Initial BoxShadow where
+  initial = fromString "initial"
+
+instance unsetBoxShadow :: Unset BoxShadow where
+  unset = fromString "unset"
 
 -- | This function will usually take a singleton list, but requiring a (non-empty) list
 -- | prevents accidentally applying the modifiers (`bsInset`, `bsColor`) incorrectly.
