@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, before, black, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, cursor, dashed, deg, direction, display, em, fontFaceSrc, fontStyle, fromString, gold, hover, inlineBlock, olive, opacity, outline, p, px, red, render, renderedInline, renderedSheet, rgba, selector, solid, teal, textOverflow, violet, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=), transform, transition, easeInOut, ms)
+import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, before, black, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, cursor, dashed, deg, direction, display, em, fontFaceSrc, fontStyle, fromString, gold, hover, inlineBlock, olive, opacity, outline, p, px, red, render, renderedInline, renderedSheet, rgba, selector, solid, teal, textOverflow, violet, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=), transform, transition, easeInOut, cubicBezier, ms)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import CSS.Cursor as Cursor
@@ -188,6 +188,10 @@ transition1 :: Rendered
 transition1 = render do
   transition "background-color" (ms 1.0) easeInOut (ms 0.0)
 
+transition2 :: Rendered
+transition2 = render do
+  transition "background-color" (ms 1.0) (cubicBezier 0.3 0.3 0.7 1.4) (ms 0.0)
+
 assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -248,6 +252,7 @@ main = do
   renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
 
   renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
+  renderedInline transition2 `assertEqual` Just "-webkit-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -moz-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -ms-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -o-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms"
 
   renderedInline noneShadow `assertEqual` Just "-webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; -o-box-shadow: none; box-shadow: none"
   renderedInline singleShadow `assertEqual` Just "-webkit-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -moz-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -ms-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -o-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%)"
